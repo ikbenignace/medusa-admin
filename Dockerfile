@@ -1,5 +1,5 @@
 # BASE IMAGE
-FROM node:14-alpine 
+FROM node:14
 # ADDITIONAL LIBRARIES NEEDED FOR BUILD
 RUN apk update; \
     apk add libpng-dev; \
