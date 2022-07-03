@@ -1,5 +1,5 @@
 # BASE IMAGE
-FROM node:14
+FROM node:16.1.15-alpine
 # ADDITIONAL LIBRARIES NEEDED FOR BUILD
 RUN apk update; \
     apk add libpng-dev; \
@@ -15,8 +15,12 @@ RUN apk update; \
     mkdir /usr/share/nginx/html;
 WORKDIR /usr/share/nginx/html
 COPY . /usr/share/nginx/html
+
 # OUR CONFIGURATION FILES FOR ENVIRONMENT VARIABLES
 COPY $PWD/docker/entrypoint.sh /usr/local/bin
+
+# NGINX CONFIGURATION TO MAKE OUR PUBLIC FOLDER ACCESSIBLE
+COPY $PWD/docker/default.conf /etc/nginx/conf.d/default.conf
 RUN chmod +x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/bin/sh", "/usr/local/bin/entrypoint.sh"]
 RUN yarn install --non-interactive --frozen-lockfile
