@@ -12,9 +12,12 @@ RUN apk update; \
     apk add nginx; \
     mkdir /run/nginx/; \
     mkdir /usr/share/nginx; \
-    mkdir /usr/share/nginx/html;WORKDIR /usr/share/nginx/htmlCOPY . /usr/share/nginx/html
+    mkdir /usr/share/nginx/html;
+WORKDIR /usr/share/nginx/html
+COPY . /usr/share/nginx/html
 # OUR CONFIGURATION FILES FOR ENVIRONMENT VARIABLES
 COPY $PWD/docker/entrypoint.sh /usr/local/bin
-RUN chmod +x /usr/local/bin/entrypoint.shENTRYPOINT ["/bin/sh", "/usr/local/bin/entrypoint.sh"]
+RUN chmod +x /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["/bin/sh", "/usr/local/bin/entrypoint.sh"]
 RUN yarn install --non-interactive --frozen-lockfile
 CMD ["/bin/sh", "-c", "exec nginx -g 'daemon off;';"]
